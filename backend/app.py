@@ -22,6 +22,10 @@ from google.auth.transport import requests as google_requests
 from bson import ObjectId
 from compiler import run_code
 from bson.errors import InvalidId
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 # app = Flask(__name__, static_folder='backend/static')
 
@@ -31,7 +35,9 @@ app.config['SECRET_KEY'] = 'your-unique-secret-key'
 app.config["JWT_SECRET_KEY"] = "your_secret_key"
 jwt = JWTManager(app)
 
-GEMINI_API_KEY = "AIzaSyCVp40VbNxEyiQ2Nk0xioMH8LCty1eoYSU"  # Replace with your Gemini API Key
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+
+#  # Replace with your Gemini API Key
 
 genai.configure(api_key=GEMINI_API_KEY)
 models = genai.list_models()
