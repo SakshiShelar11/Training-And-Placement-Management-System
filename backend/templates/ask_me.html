@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ask Me Anything</title>
+    <style>
+     body {
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    margin: 0;
+    padding: 30px;
+    background-color: #f8fafc;
+    text-align: center;
+    line-height: 1.6;
+    color: #1e293b;
+}
+
+/* Container for centering content */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+h2 {
+    color: #1e40af;
+    margin-bottom: 25px;
+    font-weight: 600;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: #3b82f6;
+    border-radius: 3px;
+}
+
+/* Category buttons container */
+.category-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+/* Your original button styles preserved */
+.category-btn {
+    padding: 10px 15px;
+    margin: 5px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    background-color: #ddd;
+    transition: 0.3s;
+    border-radius: 5px;
+}
+
+.category-btn:hover {
+    background-color: #bbb;
+}
+
+.category-btn.selected {
+    background-color: #007BFF;
+    color: white;
+}
+
+/* Input field styling */
+#question {
+    width: 80%;
+    max-width: 500px;
+    padding: 12px 15px;
+    margin: 15px 0;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+#question:focus {
+    outline: none;
+    border-color: #007BFF;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+/* Your original button styles preserved */
+button {
+    padding: 10px;
+    font-size: 16px;
+    margin: 10px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Answer box styling */
+#answer {
+    margin-top: 25px;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    max-width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+    border-left: 4px solid #007BFF;
+    line-height: 1.7;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    body {
+        padding: 20px 15px;
+    }
+    
+    .container {
+        padding: 15px;
+    }
+    
+    #question {
+        width: 90%;
+    }
+    
+    #answer {
+        padding: 15px;
+    }
+}
+        
+    </style>
+</head>
+<body>
+    
+    <h2>Ask Me Anything</h2>
+
+    <!-- Category selection buttons -->
+    <div>
+        <button class="category-btn" onclick="selectCategory('dsa')">DSA</button>
+        <button class="category-btn" onclick="selectCategory('java')">Java</button>
+        <button class="category-btn" onclick="selectCategory('python')">Python</button>
+        <button class="category-btn" onclick="selectCategory('AI')">AI</button>
+        <button class="category-btn" onclick="selectCategory('ds')">Data Science</button>
+        <button class="category-btn" onclick="selectCategory('others')">Others</button>
+    </div>
+
+    <input type="text" id="question" placeholder="Type your question...">
+    <button onclick="askQuestion()">Ask</button>
+
+    <div id="answer"></div>
+
+    <script>
+        let selectedCategory = "dsa"; // Default category
+
+        function selectCategory(category) {
+            selectedCategory = category;
+            document.querySelectorAll(".category-btn").forEach(btn => btn.classList.remove("selected"));
+            document.querySelector(`button[onclick="selectCategory('${category}')"]`).classList.add("selected");
+        }
+
+        function askQuestion() {
+            let question = document.getElementById("question").value.trim();
+
+            if (!question) {
+                document.getElementById("answer").innerHTML = "<p style='color: red;'>Please enter a question.</p>";
+                return;
+            }
+
+            fetch("http://127.0.0.1:5000/ask", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ question: question, category: selectedCategory })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("answer").innerHTML = `<p><strong>Answer:</strong> ${data.gemini_answer}</p>`;
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                document.getElementById("answer").innerHTML = "<p style='color: red;'>Error fetching answer.</p>";
+            });
+        }
+    </script>
+
+</body>
+</html>

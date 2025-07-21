@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Editor & Compiler</title>
+
+    <!-- CodeMirror CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/theme/dracula.min.css">
+
+    <!-- CodeMirror JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/mode/python/python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/mode/javascript/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/mode/clike/clike.min.js"></script> <!-- Covers C, C++, Java -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.5/mode/php/php.min.js"></script>
+
+    <style>
+        /* Base Styles */
+body {
+    font-family: 'Fira Code', 'Consolas', 'Monaco', monospace;
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+    margin: 0;
+    padding: 20px;
+    line-height: 1.5;
+    min-height: 100vh;
+}
+
+/* Header */
+h1 {
+    color: #4ec9b0;
+    text-align: center;
+    margin: 0 0 25px 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #2d2d2d;
+    font-size: 2rem;
+    font-weight: 500;
+}
+
+/* Language Selector */
+#language {
+    background-color: #252526;
+    color: #d4d4d4;
+    border: 1px solid #3a3d41;
+    padding: 8px 15px;
+    font-size: 14px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    width: 200px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.2s ease;
+}
+
+#language:hover {
+    border-color: #4ec9b0;
+}
+
+#language:focus {
+    outline: none;
+    border-color: #4ec9b0;
+    box-shadow: 0 0 0 2px rgba(78, 201, 176, 0.3);
+}
+
+/* Editor Container */
+.editor-container {
+    background-color: #252526;
+    border-radius: 6px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+/* Code Textarea */
+#code {
+    width: 100%;
+    min-height: 400px;
+    background-color: #1e1e1e;
+    color: #d4d4d4;
+    border: none;
+    padding: 20px;
+    font-family: inherit;
+    font-size: 14px;
+    line-height: 1.5;
+    resize: vertical;
+    tab-size: 4;
+    white-space: pre;
+}
+
+#code:focus {
+    outline: none;
+}
+
+/* Run Button */
+button {
+    background-color: #0e639c;
+    color: white;
+    border: none;
+    padding: 12px 0;
+    font-size: 15px;
+    font-family: inherit;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.2s;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+button:hover {
+    background-color: #1177bb;
+}
+
+button:active {
+    background-color: #0c4d7a;
+}
+
+/* Output Section */
+#output {
+    background-color: #252526;
+    border: 1px solid #2d2d2d;
+    padding: 20px;
+    min-height: 100px;
+    border-radius: 6px;
+    white-space: pre-wrap;
+    font-family: inherit;
+    font-size: 14px;
+    color: #d4d4d4;
+    margin-top: 10px;
+    line-height: 1.6;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    body {
+        padding: 15px;
+    }
+    
+    h1 {
+        font-size: 1.6rem;
+    }
+    
+    #code {
+        min-height: 300px;
+        padding: 15px;
+    }
+    
+    #language {
+        width: 100%;
+    }
+    
+    #output {
+        padding: 15px;
+    }
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #252526;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #4ec9b0;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #3aa58e;
+}
+        
+    </style>
+</head>
+<body>
+    <h1>Code Editor & Compiler</h1>
+
+    <select id="language">
+        <option value="python">Python</option>
+        <option value="javascript">JavaScript</option>
+        <option value="c">C</option>
+        <option value="cpp">C++</option>
+        <option value="java">Java</option>
+        <!-- <option value="php">PHP</option> -->
+    </select>
+
+    <div class="editor-container">
+        <textarea id="code">print("Hello, World!")</textarea>
+        <button onclick="runCode()">Run</button>
+    </div>
+
+    <pre id="output">Output will appear here...</pre>
+
+    <script src="{{ url_for('static', filename='js/code_editor.js') }}"></script>
+    <!-- <script src="/static/js/code_editor.js"></script> -->
+
+</body>
+</html>

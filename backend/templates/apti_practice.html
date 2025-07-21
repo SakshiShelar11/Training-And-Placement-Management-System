@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Aptitude Practice</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f1f5f9;
+            max-width: 800px;
+            margin: auto;
+            padding: 2rem;
+            color: #1e293b;
+        }
+
+        h2 {
+            text-align: center;
+            color: #2563eb;
+            margin-bottom: 1rem;
+        }
+
+        .category-btn {
+            padding: 0.6rem 1rem;
+            margin: 0.4rem;
+            background: #e2e8f0;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .category-btn:hover {
+            background-color: #cbd5e1;
+        }
+
+        #question {
+            background: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            border-left: 4px solid #3b82f6;
+            font-size: 1.1rem;
+        }
+
+        select, button, #feedback {
+            width: 100%;
+            padding: 0.75rem;
+            margin-top: 1rem;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #2563eb;
+        }
+
+        #feedback {
+            background-color: white;
+            border-left: 4px solid #10b981;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Aptitude Practice</h2>
+
+<div>
+    <button class="category-btn" onclick="getAptitudeQuestion('logical')">Logical</button>
+    <button class="category-btn" onclick="getAptitudeQuestion('reasoning')">Reasoning</button>
+    <button class="category-btn" onclick="getAptitudeQuestion('quantitative')">Quantitative</button>
+</div>
+
+<div id="question">Select a category to begin.</div>
+
+<select id="userOption">
+    <option value="">-- Choose an option --</option>
+    <option value="A">Option A</option>
+    <option value="B">Option B</option>
+    <option value="C">Option C</option>
+    <option value="D">Option D</option>
+</select>
+
+<button onclick="submitAptitudeAnswer()">Submit Answer</button>
+
+<div id="feedback"></div>
+
+<script>
+    let currentQuestion = "";
+
+    function getAptitudeQuestion(category) {
+        fetch("http://127.0.0.1:5000/aptitude_question", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ category: category })
+        })
+        .then(res => res.json())
+        .then(data => {
+            currentQuestion = data.question;
+            document.getElementById("question").innerHTML = data.question.replace(/\n/g, "<br>");
+            document.getElementById("feedback").innerHTML = "";
+            document.getElementById("userOption").value = "";
+        });
+    }
+
+    function submitAptitudeAnswer() {
+        const userAnswer = document.getElementById("userOption").value;
+        if (!userAnswer) {
+            alert("Please select an option.");
+            return;
+        }
+
+        fetch("http://127.0.0.1:5000/aptitude_evaluate", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ question: currentQuestion, answer: userAnswer })
+        })
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById("feedback").innerHTML = data.feedback.replace(/\n/g, "<br>");
+        });
+    }
+</script>
+
+</body>
+</html>

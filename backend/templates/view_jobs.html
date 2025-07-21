@@ -1,0 +1,566 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Jobs</title>
+</head>
+<body>
+    <button onclick="fetchJobs()">View Jobs</button>
+    <ul id="job-list"></ul>
+    <script>
+        function fetchJobs() {
+            fetch("/jobs")
+            .then(response => response.json())
+            .then(data => {
+                let jobList = document.getElementById("job-list");
+                jobList.innerHTML = "";
+                data.forEach(job => {
+                    let li = document.createElement("li");
+                    li.textContent = `${job.title} at ${job.company}`;
+                    let btn = document.createElement("button");
+                    btn.textContent = "Apply";
+                    btn.onclick = () => applyJob(job._id);
+                    li.appendChild(btn);
+                    jobList.appendChild(li);
+                });
+            });
+        }
+        function applyJob(jobId) {
+            fetch("/apply", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ job_id: jobId })
+            }).then(response => response.json())
+            .then(data => alert(data.message));
+        }
+    </script>
+</body>
+</html> -->
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Board</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #2c3e50;
+        }
+        
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+            margin: 10px 0;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        #job-list {
+            list-style: none;
+            margin-top: 20px;
+        }
+        
+        #job-list li {
+            background-color: white;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        #job-list li:hover {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+            transform: translateY(-2px);
+            transition: all 0.3s ease;
+        }
+        
+        .job-info {
+            flex: 1;
+        }
+        
+        .job-title {
+            font-weight: bold;
+            font-size: 18px;
+            color: #2c3e50;
+        }
+        
+        .job-company {
+            color: #7f8c8d;
+            font-style: italic;
+        }
+        
+        .apply-btn {
+            background-color: #2ecc71;
+            padding: 8px 15px;
+            margin-left: 15px;
+        }
+        
+        .apply-btn:hover {
+            background-color: #27ae60;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Job Board</h1>
+        <button onclick="fetchJobs()">Refresh Jobs</button>
+    </div>
+    
+    <ul id="job-list"></ul>
+    
+    <script>
+        function fetchJobs() {
+            fetch("/jobs")
+            .then(response => response.json())
+            .then(data => {
+                let jobList = document.getElementById("job-list");
+                jobList.innerHTML = "";
+                
+                if (data.length === 0) {
+                    jobList.innerHTML = "<li style='text-align: center; padding: 30px;'>No jobs available at the moment.</li>";
+                    return;
+                }
+                
+                data.forEach(job => {
+                    let li = document.createElement("li");
+                    
+                    let jobInfo = document.createElement("div");
+                    jobInfo.className = "job-info";
+                    
+                    let title = document.createElement("div");
+                    title.className = "job-title";
+                    title.textContent = job.title;
+                    
+                    let company = document.createElement("div");
+                    company.className = "job-company";
+                    company.textContent = `at ${job.company}`;
+                    
+                    jobInfo.appendChild(title);
+                    jobInfo.appendChild(company);
+                    li.appendChild(jobInfo);
+                    
+                    let btn = document.createElement("button");
+                    btn.className = "apply-btn";
+                    btn.textContent = "Apply Now";
+                    btn.onclick = () => applyJob(job._id);
+                    li.appendChild(btn);
+                    
+                    jobList.appendChild(li);
+                });
+            })
+            .catch(error => {
+                console.error("Error fetching jobs:", error);
+                document.getElementById("job-list").innerHTML = 
+                    "<li style='text-align: center; padding: 30px; color: #e74c3c;'>Error loading jobs. Please try again.</li>";
+            });
+        }
+        
+        function applyJob(jobId) {
+            fetch("/apply", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ job_id: jobId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                fetchJobs(); // Refresh the job list after applying
+            })
+            .catch(error => {
+                alert("Failed to apply. Please try again.");
+                console.error("Application error:", error);
+            });
+        }
+        
+        // Load jobs when page loads
+        document.addEventListener('DOMContentLoaded', fetchJobs);
+    </script>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Jobs</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        .job-card {
+            transition: all 0.3s ease;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .job-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+        .job-header {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        .badge-custom {
+            font-size: 0.8rem;
+            padding: 5px 10px;
+        }
+        .search-container {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        .filter-btn {
+            border-radius: 20px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        .job-description {
+            display: -webkit-box;
+            /* -webkit-line-clamp: 3; */
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+        <div class="row mb-4">
+            <div class="col-12 text-center">
+                <h1>Available Jobs</h1>
+                <p class="lead">Find your perfect job opportunity</p>
+            </div>
+        </div>
+
+        <!-- Search and Filter Section -->
+        <div class="search-container mb-5">
+            <div class="row">
+                <div class="col-md-8 mb-3 mb-md-0">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="searchInput" placeholder="Search jobs...">
+                        <button class="btn btn-primary" type="button" id="searchBtn">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <select class="form-select" id="jobTypeFilter">
+                        <option value="">All Job Types</option>
+                        <option value="Full-time">Full-time</option>
+                        <option value="Part-time">Part-time</option>
+                        <option value="Contract">Contract</option>
+                        <option value="Internship">Internship</option>
+                        <option value="Remote">Remote</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-12">
+                    <div class="d-flex flex-wrap">
+                        <button class="btn btn-outline-secondary filter-btn active" data-filter="all">All</button>
+                        <button class="btn btn-outline-secondary filter-btn" data-filter="recent">Recent</button>
+                        <button class="btn btn-outline-secondary filter-btn" data-filter="high-salary">High Salary</button>
+                        <button class="btn btn-outline-secondary filter-btn" data-filter="popular">Popular Companies</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Job List -->
+        <div class="row" id="jobList">
+            <!-- Jobs will be loaded here -->
+            <div class="col-12 text-center my-5">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Job Details Modal -->
+        <div class="modal fade" id="jobDetailsModal" tabindex="-1" aria-labelledby="jobDetailsModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="jobDetailsModalLabel">Job Details</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" id="jobDetailsContent">
+                        <!-- Job details will be loaded here -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="applyJobBtn">Apply Now</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            loadJobs();
+            
+            // Search functionality
+            document.getElementById('searchBtn').addEventListener('click', function() {
+                loadJobs();
+            });
+            
+            document.getElementById('searchInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    loadJobs();
+                }
+            });
+            
+            // Filter functionality
+            document.getElementById('jobTypeFilter').addEventListener('change', function() {
+                loadJobs();
+            });
+            
+            // Filter buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    loadJobs();
+                });
+            });
+            
+            // Apply button in modal
+            document.getElementById('applyJobBtn').addEventListener('click', function() {
+                const jobId = this.getAttribute('data-jobid');
+                applyForJob(jobId);
+            });
+        });
+        
+        
+
+        function loadJobs() {
+    const searchTerm = document.getElementById('searchInput').value;
+    const jobType = document.getElementById('jobTypeFilter').value;
+    const activeFilter = document.querySelector('.filter-btn.active').dataset.filter;
+    
+    let url = '/jobs?';
+    if (searchTerm) url += `search=${encodeURIComponent(searchTerm)}&`;
+    if (jobType) url += `type=${encodeURIComponent(jobType)}&`;
+    if (activeFilter !== 'all') url += `filter=${activeFilter}`;
+    
+    // Remove trailing & if exists
+    url = url.endsWith('&') ? url.slice(0, -1) : url;
+    
+    fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const jobList = document.getElementById('jobList');
+            jobList.innerHTML = '';
+            
+            if (data.length === 0) {
+                jobList.innerHTML = `
+                    <div class="col-12 text-center py-5">
+                        <i class="bi bi-briefcase" style="font-size: 3rem; color: #6c757d;"></i>
+                        <h4 class="mt-3">No Jobs Found</h4>
+                        <p class="text-muted">Try adjusting your search filters</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            data.forEach(job => {
+                const jobCard = document.createElement('div');
+                jobCard.className = 'col-md-6 col-lg-4 mb-4';
+                jobCard.innerHTML = `
+                    <div class="card job-card h-100">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <h5 class="card-title">${job.title}</h5>
+                                <span class="badge bg-primary">${job.jobType || 'Full-time'}</span>
+                            </div>
+                            <h6 class="card-subtitle mb-2 text-muted">${job.company}</h6>
+                            <p class="card-text text-truncate">${job.description}</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <span class="text-muted"><i class="bi bi-geo-alt"></i> ${job.location}</span>
+                                    <span class="ms-3 text-muted"><i class="bi bi-cash"></i> ${job.salary}</span>
+                                </div>
+                                <button class="btn btn-sm btn-primary view-details-btn" data-jobid="${job._id}">
+                                    View Details
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                jobList.appendChild(jobCard);
+            });
+            
+            // Add event listeners to view details buttons
+            document.querySelectorAll('.view-details-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const jobId = this.getAttribute('data-jobid');
+                    showJobDetails(jobId);
+                });
+            });
+        })
+        .catch(error => {
+            console.error('Error loading jobs:', error);
+            const jobList = document.getElementById('jobList');
+            jobList.innerHTML = `
+                <div class="col-12 text-center py-5">
+                    <i class="bi bi-exclamation-triangle" style="font-size: 3rem; color: #dc3545;"></i>
+                    <h4 class="mt-3">Error Loading Jobs</h4>
+                    <p class="text-muted">${error.message}</p>
+                </div>
+            `;
+        });
+}
+        
+        function showJobDetails(jobId) {
+            fetch(`/jobs/${jobId}`)
+                .then(response => response.json())
+                .then(job => {
+                    const modalContent = document.getElementById('jobDetailsContent');
+                    modalContent.innerHTML = `
+                        <div class="mb-4">
+                            <h4>${job.title}</h4>
+                            <h5 class="text-muted">${job.company}</h5>
+                            <div class="d-flex align-items-center mt-2">
+                                <span class="badge bg-primary me-2">${job.jobType || 'Full-time'}</span>
+                                <span class="me-3"><i class="bi bi-geo-alt"></i> ${job.location}</span>
+                                <span><i class="bi bi-cash"></i> ${job.salary}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h5>Job Description</h5>
+                            <p>${job.description}</p>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <h5>Requirements</h5>
+                            <ul>
+                                ${job.requirements ? job.requirements.split('\n').map(req => `<li>${req}</li>`).join('') : '<li>No specific requirements listed.</li>'}
+                            </ul>
+                        </div>
+                        
+                        <div class="alert alert-info">
+                            <i class="bi bi-info-circle"></i> Please make sure your profile and resume are up to date before applying.
+                        </div>
+                    `;
+                    
+                    // Set job ID on apply button
+                    document.getElementById('applyJobBtn').setAttribute('data-jobid', jobId);
+                    
+                    // Show modal
+                    const jobModal = new bootstrap.Modal(document.getElementById('jobDetailsModal'));
+                    jobModal.show();
+                })
+                .catch(error => {
+                    console.error('Error fetching job details:', error);
+                    alert('Failed to load job details. Please try again.');
+                });
+        }
+        
+        
+        function applyForJob(jobId) {
+    const token = localStorage.getItem('token');
+    if (!token) {
+        alert('Please login to apply for jobs');
+        window.location.href = '/login';
+        return;
+    }
+
+    // Debug output
+    console.log("Attempting to apply for job:", jobId);
+    console.log("Using token:", token);
+
+    fetch('/apply', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+            job_id: jobId  // Ensure this matches exactly what backend expects
+        })
+    })
+    .then(response => {
+        console.log("Raw response:", response);
+        
+        // First check for 422 specifically
+        if (response.status === 422) {
+            return response.json().then(err => {
+                console.error("Validation error details:", err);
+                throw new Error(err.error || "Validation failed");
+            });
+        }
+        
+        // Then check for other errors
+        if (!response.ok) {
+            return response.json().then(err => {
+                console.error("API error details:", err);
+                throw new Error(err.error || `HTTP error! status: ${response.status}`);
+            });
+        }
+        
+        return response.json();
+    })
+    .then(data => {
+        console.log("Application success:", data);
+        alert(data.message);
+        const jobModal = bootstrap.Modal.getInstance(document.getElementById('jobDetailsModal'));
+        if (jobModal) jobModal.hide();
+    })
+    .catch(error => {
+        console.error("Full application error:", error);
+        alert(`Application failed: ${error.message}`);
+    });
+}
+    </script>
+</body>
+</html>

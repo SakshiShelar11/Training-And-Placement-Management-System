@@ -1,0 +1,195 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get Ready for Placement</title>
+    <script>
+        async function fetchCourses() {
+            const response = await fetch("/courses");
+            const courses = await response.json();
+            let content = "";
+
+            courses.forEach(course => {
+                content += `
+                    <div>
+                        <h3>${course.title}</h3>
+                        <p><strong>Category:</strong> ${course.category}</p>
+                        <p>${course.description}</p>
+                        <a href="${course.link}" target="_blank">Watch Course</a>
+                        <hr>
+                    </div>`;
+            });
+
+            document.getElementById("course-list").innerHTML = content;
+        }
+        window.onload = fetchCourses;
+    </script>
+</head>
+<body>
+    <h1>Get Ready for Placement</h1>
+    <div id="course-list">Loading courses...</div>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get Ready for Placement</title>
+    <style>
+        body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    color: #333;
+    line-height: 1.6;
+}
+
+h2 {
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 30px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #3498db;
+    font-size: 28px;
+}
+
+#coursesTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+#coursesTable thead {
+    background-color: #3498db;
+    color: white;
+}
+
+#coursesTable th {
+    padding: 15px;
+    text-align: left;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+}
+
+#coursesTable tbody tr {
+    border-bottom: 1px solid #e0e0e0;
+    transition: all 0.3s ease;
+}
+
+#coursesTable tbody tr:nth-child(even) {
+    background-color: #f8fafc;
+}
+
+#coursesTable tbody tr:hover {
+    background-color: #f0f7ff;
+    transform: translateX(5px);
+}
+
+#coursesTable td {
+    padding: 15px;
+    vertical-align: top;
+}
+
+#coursesTable td:nth-child(1) { /* Title column */
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+#coursesTable td:nth-child(2) { /* Category column */
+    color: #7f8c8d;
+    font-size: 14px;
+}
+
+#coursesTable td:nth-child(3) { /* Description column */
+    color: #555;
+    line-height: 1.5;
+}
+
+#coursesTable td:nth-child(4) a { /* Link column */
+    display: inline-block;
+    padding: 8px 15px;
+    background-color: #27ae60;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    text-align: center;
+    min-width: 100px;
+}
+
+#coursesTable td:nth-child(4) a:hover {
+    background-color: #219955;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(39, 174, 96, 0.2);
+}
+
+/* Responsive table */
+@media (max-width: 768px) {
+    #coursesTable {
+        display: block;
+        overflow-x: auto;
+    }}
+    
+    #coursesTable th {
+        font-size: 12px;
+        padding: 10px;
+    }
+    </style>
+</head>
+<body>
+    <!-- user_dashboard.html -->
+<h2>Get Ready For Placement</h2>
+<table id="coursesTable">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Category</th>
+            <th>Description</th>
+            <th>Link</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Dynamic course rows will be injected here -->
+    </tbody>
+</table>
+
+<script>
+    // Fetch and display courses (User)
+document.addEventListener("DOMContentLoaded", function () {
+    const coursesTable = document.getElementById("coursesTable").getElementsByTagName('tbody')[0];
+
+    function fetchCourses() {
+        fetch('/courses')
+            .then(response => response.json())
+            .then(data => {
+                coursesTable.innerHTML = "";
+                data.forEach(course => {
+                    const row = coursesTable.insertRow();
+                    row.innerHTML = `
+                        <td>${course.title}</td>
+                        <td>${course.category}</td>
+                        <td>${course.description}</td>
+                        <td><a href="${course.link}" target="_blank">Watch</a></td>
+                    `;
+                });
+            });
+    }
+
+    // Initial load of courses
+    fetchCourses();
+});
+
+</script>
+</body>
+</html>
